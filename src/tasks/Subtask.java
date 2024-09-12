@@ -1,26 +1,25 @@
+package tasks;
+
 public class Subtask extends Task {
 
-    private final int epicID;
+    private final int epicId;
 
-    public Subtask(String name, String description, int epicID) {
+    public Subtask(String name, String description, int epicId) {
         super(name, description);
-        this.epicID = epicID;
+        this.epicId = epicId;
     }
 
-
     public int getEpicID() {
-        return epicID;
+        return epicId;
     }
 
     @Override
     public String toString() {
-        return "Subtask{" +
+        return "tasks.Subtask{" +
                 "id=" + getId() +
                 ", name='" + getName() + '\'' +
                 ", description='" + getDescription() + '\'' +
                 ", status=" + getStatus() +
                 '}';
     }
-
-
 }

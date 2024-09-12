@@ -1,3 +1,9 @@
+import manager.TaskManager;
+import tasks.Epic;
+import tasks.Status;
+import tasks.Subtask;
+import tasks.Task;
+
 public class Main {
     public static void main(String[] args) {
 
@@ -23,6 +29,5 @@ public class Main {
         taskManager.updateSubtask(subtask);
         System.out.println(epic.getSubtaskList());
         System.out.println(epic);
-
     }
 }

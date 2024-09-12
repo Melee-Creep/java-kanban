@@ -1,8 +1,14 @@
+package manager;
+
+import tasks.Epic;
+import tasks.Subtask;
+import tasks.Task;
+import tasks.Status;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 
 public class TaskManager {
 
@@ -36,7 +42,6 @@ public class TaskManager {
         epics.put(epic.getId(), epic);
         return epic;
     }
-
 
     public Map<Integer, Task> getAllTasks() {  // a.
         return tasks;
@@ -183,7 +188,7 @@ public class TaskManager {
 
     @Override
     public String toString() {
-        return "TaskManager{" +
+        return "manager.TaskManager{" +
                 "id=" + id +
                 ", tasks=" + tasks +
                 '}';
