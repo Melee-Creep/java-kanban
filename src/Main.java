@@ -1,4 +1,4 @@
-import manager.TaskManager;
+import manager.InMemoryTaskManager;
 import tasks.Epic;
 import tasks.Status;
 import tasks.Subtask;
@@ -7,7 +7,7 @@ import tasks.Task;
 public class Main {
     public static void main(String[] args) {
 
-        TaskManager taskManager = new TaskManager();
+        InMemoryTaskManager taskManager = new InMemoryTaskManager();
         Task task = taskManager.addTask(new Task("Первая задача","Попить чаю", Status.NEW));
         Task task1 = taskManager.addTask(new Task("Вторая задача","Покушать булку", Status.NEW));
         System.out.println("Список всех задач"+taskManager.getAllTasks());
@@ -22,12 +22,14 @@ public class Main {
 
         Epic epic = taskManager.addEpic(new Epic("Эпик","Большой эпик",Status.NEW));
         System.out.println(epic);
-        Subtask subtask = taskManager.addSubtask(new Subtask("Под.эпик", "эпик1", epic.getId()));
-        Subtask subtask1 = taskManager.addSubtask(new Subtask("Под.эпик1", "эпик1", epic.getId()));
+
+        Subtask subtask = taskManager.addSubtask(new Subtask("Под.эпик", "эпик1",epic.getId()));
+        Subtask subtask1 = taskManager.addSubtask(new Subtask("Под.эпик1", "эпик1",epic.getId()));
         System.out.println(epic.getSubtaskList());
         subtask.setStatus(Status.DONE);
         taskManager.updateSubtask(subtask);
         System.out.println(epic.getSubtaskList());
         System.out.println(epic);
+        InMemoryTaskManager.printAllTasks(taskManager);
     }
 }
