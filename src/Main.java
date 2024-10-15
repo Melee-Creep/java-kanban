@@ -41,5 +41,6 @@ public class Main {
         taskManager.removeTask(0);
         taskManager.deleteSubtaskById(3);
         InMemoryTaskManager.printAllTasks(taskManager);
+        taskManager.removeTask(9);
     }
 }

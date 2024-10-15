@@ -73,7 +73,7 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     @Override
     public void add(Task task) {
-        if (!(task == null)) {
+        if (task != null) {
             remove(task.getId());
             linkLast(task);
         }
@@ -86,6 +86,8 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     @Override
     public void remove(int id) {
-        removeNode(historyTask.get(id));
+        if (historyTask.get(id) != null) {
+            removeNode(historyTask.get(id));
+        }
     }
 }
