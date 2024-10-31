@@ -82,7 +82,7 @@ public class InMemoryTaskManagerTest {
         Subtask subtask = taskManager.addSubtask(new Subtask("Под.эпик", "эпик1", epic.getId()));
         Subtask subtask1 = taskManager.addSubtask(new Subtask("Под.эпик1", "эпик1",epic.getId()));
         taskManager.deleteSubtaskById(1);
-        List<Subtask> subtasks = taskManager.getEpicById(epic.getId()).getSubtaskList();
+        List<Integer> subtasks = taskManager.getEpicById(epic.getId()).getSubtaskList();
         Assertions.assertEquals(1, subtasks.size(), "Подзадача не удалена");
     }
 

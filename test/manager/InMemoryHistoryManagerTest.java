@@ -6,8 +6,6 @@ import tasks.Status;
 import tasks.Subtask;
 import tasks.Task;
 
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class InMemoryHistoryManagerTest {

@@ -37,7 +37,7 @@ public interface TaskManager {
 
     List<Subtask> getSubtasks();//
 
-    List<Subtask> getEpicSubtasks(Epic epic);//
+    List<Integer> getEpicSubtasks(Epic epic);//
 
     void deleteAllEpics(); //
 
@@ -53,25 +53,4 @@ public interface TaskManager {
 
     List<Task> getHistory();
 
-    default void updateEpicStatus(Epic epic) {
-        int allIsDoneCount = 0;
-        int allIsInNewCount = 0;
-        List<Subtask> list = epic.getSubtaskList();
-
-        for (Subtask subtask : list) {
-            if (subtask.getStatus() == Status.DONE) {
-                allIsDoneCount++;
-            }
-            if (subtask.getStatus() == Status.NEW) {
-                allIsInNewCount++;
-            }
-        }
-        if (allIsDoneCount == list.size()) {
-            epic.setStatus(Status.DONE);
-        } else if (allIsInNewCount == list.size()) {
-            epic.setStatus(Status.NEW);
-        } else {
-            epic.setStatus(Status.IN_PROGRESS);
-        }
-    }
 }
