@@ -77,12 +77,12 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Map<Integer, Task> getAllTasks() {  // a.
+    public Map<Integer, Task> getAllTasks() {
         return tasks;
     }
 
     @Override
-    public void removeAllTask() { // b.
+    public void removeAllTask() {
         tasks.clear();
     }
 
@@ -96,7 +96,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void removeTask(int id) { // f.
+    public void removeTask(int id) {
         tasks.remove(id);
         historyManager.remove(id);
     }
@@ -244,22 +244,22 @@ public class InMemoryTaskManager implements TaskManager {
 
     private void updateEpicStatus(Integer id) {
         Epic epic = epics.get(id);
-        int allIsDoneCount = 0;
-        int allIsInNewCount = 0;
+        int IsDoneSubtaskCount = 0;
+        int IsInNewSubtaskCount = 0;
         List<Integer> list = epic.getSubtaskList();
 
-        for (Integer i : list) {
-            Subtask subtask = subtasks.get(i);
+        for (Integer tasks : list) {
+            Subtask subtask = subtasks.get(tasks);
             if (subtask.getStatus() == Status.DONE) {
-                allIsDoneCount++;
+                IsDoneSubtaskCount++;
             }
             if (subtask.getStatus() == Status.NEW) {
-                allIsInNewCount++;
+                IsInNewSubtaskCount++;
             }
         }
-        if (allIsDoneCount == list.size()) {
+        if (IsDoneSubtaskCount == list.size()) {
             epic.setStatus(Status.DONE);
-        } else if (allIsInNewCount == list.size()) {
+        } else if (IsInNewSubtaskCount == list.size()) {
             epic.setStatus(Status.NEW);
         } else {
             epic.setStatus(Status.IN_PROGRESS);

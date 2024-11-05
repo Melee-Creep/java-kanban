@@ -13,7 +13,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
     private final File file;
 
-    InMemoryTaskManager taskManager = new InMemoryTaskManager();
+
 
     public FileBackedTasksManager(File file) {
         super();
@@ -54,7 +54,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                     } else if (task.getType() == Type.EPIC) {
                         super.addEpics(id, (Epic) task);
                     }
-                    taskManager.setIdCounter(maxId);
+                    super.setIdCounter(maxId);
                 }
             }
             if (!subtasks.isEmpty()) {
@@ -64,7 +64,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                 }
             }
         } catch (IOException e) {
-            throw new ManagerSaveException("Произошла ошибка во время чтения файла." + file.getAbsolutePath(), e);
+            throw new ManagerSaveException("Произошла ошибка во время чтения файла.", e);
         }
     }
 
@@ -81,7 +81,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                 bufferedWriter.write(StringConverter.taskToString(epic) + "\n");
             }
         } catch (IOException e) {
-            throw new ManagerSaveException("Произошла ошибка во время записи файла." + file.getAbsolutePath(), e);
+            throw new ManagerSaveException("Произошла ошибка во время записи файла.", e);
         }
     }
 
@@ -107,24 +107,23 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     @Override
-    public Map<Integer, Task> getAllTasks() {  // a.
+    public Map<Integer, Task> getAllTasks() {
         return super.getAllTasks();
     }
 
     @Override
-    public void removeAllTask() { // b.
+    public void removeAllTask() {
         super.removeAllTask();
         save();
     }
 
     @Override
     public Task getTask(int id) {
-        Task task = super.getTask(id);
-        return task;
+        return super.getTask(id);
     }
 
     @Override
-    public void removeTask(int id) { // f.
+    public void removeTask(int id) {
         super.removeTask(id);
         save();
     }
@@ -138,14 +137,12 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
     @Override
     public Epic getEpicById(int id) {
-        Epic epic = super.getEpicById(id);
-        return epic;
+        return super.getEpicById(id);
     }
 
     @Override
     public Subtask getSubtaskById(int id) {
-        Subtask subtask = super.getSubtaskById(id);
-        return subtask;
+        return super.getSubtaskById(id);
     }
 
     @Override
@@ -210,5 +207,4 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     public List<Task> getHistory() {
         return super.getHistory();
     }
-
 }
