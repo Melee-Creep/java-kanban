@@ -244,22 +244,22 @@ public class InMemoryTaskManager implements TaskManager {
 
     private void updateEpicStatus(Integer id) {
         Epic epic = epics.get(id);
-        int IsDoneSubtaskCount = 0;
-        int IsInNewSubtaskCount = 0;
+        int doneSubtaskCount = 0;
+        int newSubtaskCount = 0;
         List<Integer> list = epic.getSubtaskList();
 
         for (Integer tasks : list) {
             Subtask subtask = subtasks.get(tasks);
             if (subtask.getStatus() == Status.DONE) {
-                IsDoneSubtaskCount++;
+                doneSubtaskCount++;
             }
             if (subtask.getStatus() == Status.NEW) {
-                IsInNewSubtaskCount++;
+                newSubtaskCount++;
             }
         }
-        if (IsDoneSubtaskCount == list.size()) {
+        if (doneSubtaskCount == list.size()) {
             epic.setStatus(Status.DONE);
-        } else if (IsInNewSubtaskCount == list.size()) {
+        } else if (newSubtaskCount == list.size()) {
             epic.setStatus(Status.NEW);
         } else {
             epic.setStatus(Status.IN_PROGRESS);
