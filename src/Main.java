@@ -1,8 +1,11 @@
+import manager.FileBackedTasksManager;
 import manager.InMemoryTaskManager;
 import tasks.Epic;
 import tasks.Status;
 import tasks.Subtask;
 import tasks.Task;
+
+import java.io.File;
 
 public class Main {
     public static void main(String[] args) {
@@ -42,5 +45,18 @@ public class Main {
         taskManager.deleteSubtaskById(3);
         InMemoryTaskManager.printAllTasks(taskManager);
         taskManager.removeTask(9);
+
+        File file1 = new File("File.csv");
+        FileBackedTasksManager taskManager1 = new FileBackedTasksManager(file1);
+        Task newTask = taskManager1.addTask(new Task("Новая первая задача","Попить чаю", Status.NEW));
+        Epic newEpic = taskManager1.addEpic(new Epic("Эпик","Большой эпик",Status.NEW));
+        Subtask newSubtask = taskManager1.addSubtask(new Subtask("Под.эпик", "эпик1", newEpic.getId()));
+        Subtask newSubtask1 = taskManager1.addSubtask(new Subtask("Под.эпик1", "эпик1", newEpic.getId()));
+
+        FileBackedTasksManager backedTasksManager = FileBackedTasksManager.loadFromFile(file1);
+        System.out.println("\n****\n backup");
+        System.out.println(backedTasksManager.getAllTasks());
+        System.out.println(backedTasksManager.getEpics());
+        System.out.println(backedTasksManager.getSubtasks());
     }
 }
