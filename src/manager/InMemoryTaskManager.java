@@ -19,7 +19,7 @@ public class InMemoryTaskManager implements TaskManager {
     final Map<Integer, Epic> epics = new HashMap<>();
     final HistoryManager historyManager = Managers.getDefaultHistory();
     TaskPlanner planner = new TaskPlanner();
-    private Map<LocalDateTime, Boolean> interval = planner.IntervalTimeMap();
+    private Map<LocalDateTime, Boolean> interval = planner.intervalTimeMap();
 
     @Override
     public int generateId() {
@@ -163,8 +163,8 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     private boolean isCross(Task task) {
-        LocalDateTime startTime = planner.UpdateInterval(task.getStartTime());
-        LocalDateTime endTime = planner.UpdateInterval(task.getEndTime());
+        LocalDateTime startTime = planner.updateInterval(task.getStartTime());
+        LocalDateTime endTime = planner.updateInterval(task.getEndTime());
         while (startTime.isBefore(endTime)) {
             if (interval.get(startTime)) {
                 return true;
@@ -181,8 +181,8 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     private void resetTimeInterval(Task task) {
-        LocalDateTime startTime = planner.UpdateInterval(task.getStartTime());
-        LocalDateTime endTime = planner.UpdateInterval(task.getEndTime());
+        LocalDateTime startTime = planner.updateInterval(task.getStartTime());
+        LocalDateTime endTime = planner.updateInterval(task.getEndTime());
         while (startTime.isBefore(endTime)) {
             interval.put(startTime, false);
             startTime = startTime.plusMinutes(15);

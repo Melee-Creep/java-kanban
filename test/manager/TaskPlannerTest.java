@@ -21,7 +21,7 @@ public class TaskPlannerTest {
     void shouldIntervalTimeSlots() {
         LocalDateTime time = LocalDateTime.of(2024, 1, 1, 0, 0);
 
-        Map<LocalDateTime, Boolean> interval = taskPlanner.IntervalTimeMap();
+        Map<LocalDateTime, Boolean> interval = taskPlanner.intervalTimeMap();
 
         assertEquals(35136, interval.size(), "Количество ячеек не соответствует году");
         assertEquals(false, interval.get(time), "Ячейка отдает не верное булево значение");
@@ -32,7 +32,7 @@ public class TaskPlannerTest {
         LocalDateTime time = LocalDateTime.of(2021, 1, 1, 1, 9, 59);
         LocalDateTime time2 = LocalDateTime.of(2021, 1, 1, 1, 15);
 
-        LocalDateTime timeCheck = taskPlanner.UpdateInterval(time);
+        LocalDateTime timeCheck = taskPlanner.updateInterval(time);
 
         assertEquals(time2, timeCheck, "Время не совпадает");
     }
@@ -42,7 +42,7 @@ public class TaskPlannerTest {
         LocalDateTime time = LocalDateTime.of(2021, 1, 1, 1, 5, 59);
         LocalDateTime time2 = LocalDateTime.of(2021, 1, 1, 1, 0);
 
-        LocalDateTime timeCheck = taskPlanner.UpdateInterval(time);
+        LocalDateTime timeCheck = taskPlanner.updateInterval(time);
 
         assertEquals(time2, timeCheck, "Время не совпадает");
     }
@@ -52,7 +52,7 @@ public class TaskPlannerTest {
         LocalDateTime time = LocalDateTime.of(2021, 1, 1, 1, 0, 59);
         LocalDateTime time2 = LocalDateTime.of(2021, 1, 1, 1, 0);
 
-        LocalDateTime timeCheck = taskPlanner.UpdateInterval(time);
+        LocalDateTime timeCheck = taskPlanner.updateInterval(time);
 
         assertEquals(time2, timeCheck, "Время не совпадает");
     }

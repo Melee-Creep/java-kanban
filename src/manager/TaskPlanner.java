@@ -11,7 +11,7 @@ public class TaskPlanner {
     private static final LocalDateTime START = LocalDateTime.of(2024,1,1,0,0);
     private static final LocalDateTime END = START.plusYears(1);
 
-    public Map<LocalDateTime, Boolean> IntervalTimeMap() {
+    public Map<LocalDateTime, Boolean> intervalTimeMap() {
         Map<LocalDateTime, Boolean> interval = new HashMap<>();
         LocalDateTime current = START;
         while (current.isBefore(END)) {
@@ -21,7 +21,7 @@ public class TaskPlanner {
         return interval;
     }
 
-    public LocalDateTime UpdateInterval(LocalDateTime time) {
+    public LocalDateTime updateInterval(LocalDateTime time) {
         LocalDateTime timeWithoutSeconds = time.truncatedTo(ChronoUnit.MINUTES);
         int remainder = timeWithoutSeconds.getMinute() % 15;
         if (remainder >= 7) {
