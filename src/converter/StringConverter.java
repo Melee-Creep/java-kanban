@@ -4,8 +4,6 @@ import tasks.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
 
 public class StringConverter {
 
@@ -52,7 +50,7 @@ public class StringConverter {
         String type = String.valueOf(task.getType());
 
         return  switch (type) {
-            case "EPIC", "TASK"-> String.join(",", Integer.toString(task.getId()), type, task.getName(),
+            case "EPIC", "TASK" -> String.join(",", Integer.toString(task.getId()), type, task.getName(),
                     task.getStatus().toString(), task.getDescription(), Integer.toString(task.getDuration()),
                     task.getStartTime().format(formatter), null);
             case  "SUBTASK" -> String.join(",", Integer.toString(task.getId()), type, task.getName(),
