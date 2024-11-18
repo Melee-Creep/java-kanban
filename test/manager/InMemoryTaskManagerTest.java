@@ -6,15 +6,21 @@ import tasks.Status;
 import tasks.Subtask;
 import tasks.Task;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 
-public class InMemoryTaskManagerTest {
+public class InMemoryTaskManagerTest  extends ManagersTest<InMemoryTaskManager> {
 
-    private static TaskManager taskManager;
+    InMemoryTaskManager taskManager;
+
+    @Override
+    InMemoryTaskManager createManager() {
+        return new InMemoryTaskManager();
+    }
 
     @BeforeEach
-    public void beforeEach() {
+    public void init() {
         taskManager = Managers.getDefault();
     }
 
@@ -34,8 +40,9 @@ public class InMemoryTaskManagerTest {
     @Test
     public void AddNewEpicAndSubtask() {
         Epic epic = taskManager.addEpic(new Epic("Эпик","Большой эпик",Status.NEW));
-        Subtask subtask = taskManager.addSubtask(new Subtask("Под.эпик", "эпик1",epic.getId()));
-        Subtask subtask1 = taskManager.getSubtaskById(subtask.getId());
+        Subtask subtask = taskManager.addSubtask(new Subtask("Под.эпик", "эпик1", Status.NEW ,
+                10 , LocalDateTime.of(2024,1,1, 12,0), epic.getId()));
+        Subtask subtask1 = taskManager.getSubtaskById(1);
         Epic epic1 = taskManager.getEpicById(epic.getId());
         Assertions.assertNotNull(epic, "Эпик не создан");
         Assertions.assertNotNull(subtask, "Под.эпик не создан");
@@ -79,8 +86,10 @@ public class InMemoryTaskManagerTest {
     @Test
     public void DeleteSubtaskWithId() {
         Epic epic = taskManager.addEpic(new Epic("Эпик","Большой эпик",Status.NEW));
-        Subtask subtask = taskManager.addSubtask(new Subtask("Под.эпик", "эпик1", epic.getId()));
-        Subtask subtask1 = taskManager.addSubtask(new Subtask("Под.эпик1", "эпик1",epic.getId()));
+        Subtask subtask = taskManager.addSubtask(new Subtask("Под.эпик", "эпик1", Status.NEW ,
+                10 , LocalDateTime.of(2024,1,1, 12,0), epic.getId()));
+        Subtask subtask1 = taskManager.addSubtask(new Subtask("Под.эпик", "эпик1", Status.NEW ,
+                10 , LocalDateTime.of(2024,1,1, 11,0), epic.getId()));
         taskManager.deleteSubtaskById(1);
         List<Integer> subtasks = taskManager.getEpicById(epic.getId()).getSubtaskList();
         Assertions.assertEquals(1, subtasks.size(), "Подзадача не удалена");
@@ -89,8 +98,10 @@ public class InMemoryTaskManagerTest {
     @Test
     public void UpdateStatusEpicAndSubtask() {
         Epic epic = taskManager.addEpic(new Epic("Эпик","Большой эпик",Status.NEW));
-        Subtask subtask = taskManager.addSubtask(new Subtask("Под.эпик", "эпик1", epic.getId()));
-        Subtask subtask1 = taskManager.addSubtask(new Subtask("Под.эпик1", "эпик1",epic.getId()));
+        Subtask subtask = taskManager.addSubtask(new Subtask("Под.эпик", "эпик1", Status.NEW ,
+                10 , LocalDateTime.of(2024,1,1, 12,0), epic.getId()));
+        Subtask subtask1 = taskManager.addSubtask(new Subtask("Под.эпик", "эпик1", Status.NEW ,
+                10 , LocalDateTime.of(2024,1,1, 11,0), epic.getId()));
         subtask.setStatus(Status.DONE);
         taskManager.updateSubtask(subtask);
         Assertions.assertEquals(Status.IN_PROGRESS, epic.getStatus(), "Статус не обновляется");
