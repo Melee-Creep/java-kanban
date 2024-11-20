@@ -9,7 +9,6 @@ public class StringConverter {
 
     static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-
     public static Task taskFromString(String line) {
         String[] splitTask;
         splitTask = line.split(",");
