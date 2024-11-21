@@ -9,18 +9,25 @@ import tasks.Subtask;
 import tasks.Task;
 
 import java.io.File;
+import java.time.LocalDateTime;
 import java.util.Collections;
 
-public class FileBackedTaskManagerTest {
+public class FileBackedTaskManagerTest extends ManagersTest<FileBackedTasksManager> {
 
     private static File file;
-    private static InMemoryTaskManager taskManager = new InMemoryTaskManager();
+    FileBackedTasksManager taskManager;
 
+
+    @Override
+    FileBackedTasksManager createManager() {
+        return new FileBackedTasksManager(new File("testFile.csv"));
+    }
 
     @BeforeEach
-    public void beforeEach() {
+    void init() {
         file = new File("testFile.csv");
         taskManager = new FileBackedTasksManager(file);
+
     }
 
     @Test
@@ -40,8 +47,10 @@ public class FileBackedTaskManagerTest {
     public void shouldLoadListOfTask() {
         Task newTask = taskManager.addTask(new Task("Новая первая задача","Попить чаю", Status.NEW));
         Epic newEpic = taskManager.addEpic(new Epic("Эпик","Большой эпик",Status.NEW));
-        Subtask newSubtask = taskManager.addSubtask(new Subtask("Под.эпик", "эпик1", newEpic.getId()));
-        Subtask newSubtask1 = taskManager.addSubtask(new Subtask("Под.эпик1", "эпик1", newEpic.getId()));
+        Subtask newSubtask = taskManager.addSubtask(new Subtask("Под.эпик", "эпик1", Status.NEW ,
+                10 , LocalDateTime.of(2024,1,1, 12,0), newEpic.getId()));
+        Subtask newSubtask1 = taskManager.addSubtask(new Subtask("Под.эпик", "эпик1", Status.NEW ,
+                10 , LocalDateTime.of(2024,1,1, 13,0), newEpic.getId()));
 
         FileBackedTasksManager loadFileManager = FileBackedTasksManager.loadFromFile(file);
 

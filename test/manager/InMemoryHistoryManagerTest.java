@@ -6,6 +6,8 @@ import tasks.Status;
 import tasks.Subtask;
 import tasks.Task;
 
+import java.time.LocalDateTime;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class InMemoryHistoryManagerTest {
@@ -14,7 +16,7 @@ public class InMemoryHistoryManagerTest {
     private static HistoryManager historyManager;
 
     @BeforeEach
-    public void beforeEach() {
+    public void init() {
         taskManager = Managers.getDefault();
         historyManager = Managers.getDefaultHistory();
     }
@@ -29,7 +31,9 @@ public class InMemoryHistoryManagerTest {
         Task task = taskManager.addTask(new Task("Первая задача","Попить чаю", Status.NEW));
         Task task1 = taskManager.addTask(new Task("Вторая задача","Покушать булку", Status.NEW));
         Epic epic = taskManager.addEpic(new Epic("Эпик","Большой эпик",Status.NEW));
-        Subtask subtask = taskManager.addSubtask(new Subtask("Под.эпик", "эпик1",epic.getId()));
+        Subtask subtask = taskManager.addSubtask(new Subtask("Под.эпик", "эпик1", Status.NEW ,
+                10 , LocalDateTime.of(2024,1,1, 12,0), epic.getId()));
+
         historyManager.add(task);
         historyManager.add(task1);
         historyManager.add(epic);
@@ -42,7 +46,8 @@ public class InMemoryHistoryManagerTest {
         Task task = taskManager.addTask(new Task("Первая задача","Попить чаю", Status.NEW));
         Task task1 = taskManager.addTask(new Task("Вторая задача","Покушать булку", Status.NEW));
         Epic epic = taskManager.addEpic(new Epic("Эпик","Большой эпик",Status.NEW));
-        Subtask subtask = taskManager.addSubtask(new Subtask("Под.эпик", "эпик1",epic.getId()));
+        Subtask subtask = taskManager.addSubtask(new Subtask("Под.эпик", "эпик1", Status.NEW ,
+                10 , LocalDateTime.of(2024,1,1, 12,0), epic.getId()));
         historyManager.add(task);
         historyManager.add(task1);
         historyManager.add(epic);
@@ -56,7 +61,8 @@ public class InMemoryHistoryManagerTest {
         Task task = taskManager.addTask(new Task("Первая задача","Попить чаю", Status.NEW));
         Task task1 = taskManager.addTask(new Task("Вторая задача","Покушать булку", Status.NEW));
         Epic epic = taskManager.addEpic(new Epic("Эпик","Большой эпик",Status.NEW));
-        Subtask subtask = taskManager.addSubtask(new Subtask("Под.эпик", "эпик1",epic.getId()));
+        Subtask subtask = taskManager.addSubtask(new Subtask("Под.эпик", "эпик1", Status.NEW ,
+                10 , LocalDateTime.of(2024,1,1, 12,0), epic.getId()));
         historyManager.add(task);
         historyManager.add(task1);
         historyManager.add(epic);
