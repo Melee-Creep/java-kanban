@@ -114,7 +114,7 @@ public class BaseHttpHandler {
             update.accept(object);
             String response = "Задача обновлена";
             writeResponse(exchange, response, 201);
-        } catch (Exception e ) {
+        } catch (Exception e) {
             writeResponse(exchange, "Задача не обновлена", 406);
         }
     }
