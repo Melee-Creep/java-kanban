@@ -151,7 +151,7 @@ public class HttpTaskServerTest {
         Task task = manager.addTask(new Task("Первая задача", "Попить чаю", Status.NEW));
 
         HttpClient client = HttpClient.newHttpClient();
-        URI url = URI.create("http://localhost:8080/tasks/?id=0");
+        URI url = URI.create("http://localhost:8080/tasks/?0");
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(url)
                 .GET()
@@ -170,7 +170,7 @@ public class HttpTaskServerTest {
         Epic epic = manager.addEpic(new Epic("Тестовая задача, заголовок", "Описание тестовой задачи"));
 
         HttpClient client = HttpClient.newHttpClient();
-        URI url = URI.create("http://localhost:8080/epics/?id=0");
+        URI url = URI.create("http://localhost:8080/epics/?0");
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(url)
                 .GET()
@@ -190,7 +190,7 @@ public class HttpTaskServerTest {
                 10, LocalDateTime.of(2024, 1, 1, 12, 0), epic.getId()));
 
         HttpClient client = HttpClient.newHttpClient();
-        URI url = URI.create("http://localhost:8080/subtasks/?id=1");
+        URI url = URI.create("http://localhost:8080/subtasks/?1");
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(url)
                 .GET()
@@ -265,7 +265,7 @@ public class HttpTaskServerTest {
         Task task = manager.addTask(new Task("Вторая задача", "Помыть кружку", Status.NEW));
 
         HttpClient client = HttpClient.newHttpClient();
-        URI url = URI.create("http://localhost:8080/tasks/?id=0");
+        URI url = URI.create("http://localhost:8080/tasks/?0");
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(url)
                 .DELETE()
@@ -283,7 +283,7 @@ public class HttpTaskServerTest {
         Epic epic = manager.addEpic(new Epic("Эпик", "Большой эпик", Status.NEW));
 
         HttpClient client = HttpClient.newHttpClient();
-        URI url = URI.create("http://localhost:8080/epics/?id=0");
+        URI url = URI.create("http://localhost:8080/epics/?0");
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(url)
                 .DELETE()
@@ -337,6 +337,42 @@ public class HttpTaskServerTest {
         String tasks = response.body();
         assertEquals(200, response.statusCode());
         assertEquals(expectedTasks, tasks, "задачи не совпадают");
+    }
+
+    @Test
+    public void httpGetException404Test() throws IOException, InterruptedException {
+        Task task = manager.addTask(new Task("Первая задача", "Попить чаю", Status.NEW));
+
+        HttpClient client = HttpClient.newHttpClient();
+        URI url = URI.create("http://localhost:8080/tasks/?100");
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(url)
+                .GET()
+                .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        assertEquals(404, response.statusCode());
+        assertEquals("Задача с идентификатором 100 не найдена", response.body());
+
+    }
+
+    @Test
+    public void httpPostException406Test() throws IOException, InterruptedException {
+
+        Task task = manager.addTask(new Task("Первая задача", "Попить чаю", Status.NEW, 100, LocalDateTime.now()));
+        Task task2 = new Task("Вторая задача", "Помыть кружку", Status.NEW);
+
+        HttpClient client = HttpClient.newHttpClient();
+        URI url = URI.create("http://localhost:8080/tasks");
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(url)
+                .POST(HttpRequest.BodyPublishers.ofString(gson.toJson(task2)))
+                .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        assertEquals(406, response.statusCode());
+        assertEquals("Задача не создана", response.body());
     }
 }
 

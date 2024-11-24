@@ -15,9 +15,6 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-import static tasks.Type.EPIC;
-import static tasks.Type.TASK;
-
 public class BaseHttpHandler {
     private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
     protected final TaskManager taskManager;
@@ -94,19 +91,17 @@ public class BaseHttpHandler {
             return;
         }
 
-        T object = gson.fromJson(body, c);
-
-        if (object != null) {
+        try {
+            T object = gson.fromJson(body, c);
             creator.accept(object);
             String response = "Задача создана";
             writeResponse(exchange, response, 201);
-            return;
+        } catch (Exception e) {
+            writeResponse(exchange, "Задача не создана", 406);
         }
-
-        writeResponse(exchange, "Задача не создана", 404);
     }
 
-    protected <T> void handlePostObjectUpdate(HttpExchange exchange, Class<T> c, Consumer<T> uppdate) throws IOException {
+    protected <T> void handlePostObjectUpdate(HttpExchange exchange, Class<T> c, Consumer<T> update) throws IOException {
         InputStream bodyInputStream = exchange.getRequestBody();
         String body = new String(bodyInputStream.readAllBytes(), StandardCharsets.UTF_8);
         if (body.isEmpty()) {
@@ -114,41 +109,39 @@ public class BaseHttpHandler {
             return;
         }
 
-        T object = gson.fromJson(body, c);
-
-        if (object != null) {
-            uppdate.accept(object);
+        try {
+            T object = gson.fromJson(body, c);
+            update.accept(object);
             String response = "Задача обновлена";
             writeResponse(exchange, response, 201);
-            return;
+        } catch (Exception e ){
+            writeResponse(exchange, "Задача не обновлена", 406);
         }
-
-        writeResponse(exchange, "Задача не обновлена", 404);
     }
 
-    protected void handleGetObject(HttpExchange exchange, Function<Integer, ? extends Task> getter) throws
-            IOException {
+    protected void handleGetObject(HttpExchange exchange, Function<Integer, ? extends Task> getter) throws IOException {
+
         Optional<Integer> id = getId(exchange);
+
         if (id.isEmpty()) {
             writeResponse(exchange, "Некорректный формат id", 400);
             return;
         }
 
-        Task objectById = getter.apply(id.get());
-        if (objectById != null) {
-            String response = gson.toJson(objectById);
-            sendText(exchange, response);
-            return;
+        try {
+         Task objectById = getter.apply(id.get());
+         String response = gson.toJson(objectById);
+         sendText(exchange, response);
+        } catch (Exception e) {
+            writeResponse(exchange, "Задача с идентификатором " + id.get() + " не найдена", 404);
         }
-
-        writeResponse(exchange, "Задача с идентификатором " + id.get() + " не найдена", 404);
     }
 
     protected Optional<Integer> getId(HttpExchange exchange) {
-        String query = exchange.getRequestURI().getQuery();
-        if (query != null) {
-            return Optional.of(Integer.parseInt(query.substring(query.indexOf("?id=") + 4)));
-        } else {
+
+        try {
+            return Optional.of(Integer.parseInt(exchange.getRequestURI().getQuery()));
+        } catch (NumberFormatException exception) {
             return Optional.empty();
         }
     }
@@ -163,7 +156,7 @@ public class BaseHttpHandler {
         if (requestMethod.equals("DELETE") && query == null) {
             return Endpoint.DELETE_ALL;
         }
-        if (requestMethod.equals("GET") && query != null) {
+        if (requestMethod.equals("GET") && query != null) {  // 1 ПОЛУЧИЛИ ЭНДПОИНТ
             return Endpoint.GET;
         }
         if (requestMethod.equals("POST")) {

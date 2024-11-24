@@ -3,7 +3,6 @@ package http;
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpServer;
 import manager.*;
-import tasks.Epic;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -42,6 +41,5 @@ public class HttpTaskServer {
         TaskManager taskManager = new InMemoryTaskManager();
         HttpTaskServer httpTaskServer = new HttpTaskServer(taskManager);
         httpTaskServer.start();
-        Epic epic = new Epic("эпик", "эпик");
     }
 }
