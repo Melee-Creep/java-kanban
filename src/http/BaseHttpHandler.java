@@ -156,7 +156,7 @@ public class BaseHttpHandler {
         if (requestMethod.equals("DELETE") && query == null) {
             return Endpoint.DELETE_ALL;
         }
-        if (requestMethod.equals("GET") && query != null) {  // 1 ПОЛУЧИЛИ ЭНДПОИНТ
+        if (requestMethod.equals("GET") && query != null) {
             return Endpoint.GET;
         }
         if (requestMethod.equals("POST")) {
